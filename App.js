@@ -1,18 +1,36 @@
 import React from 'react';
-import { mapping, light as lightTheme } from '@eva-design/eva';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { ApplicationProvider, IconRegistry, Layout, Text } from 'react-native-ui-kitten';
-import { HomeScreen } from './some-screen.component';
+import { View, Text } from 'react-native';
+import Header from './src/components/Header';
+import ContactList from './src/components/ContactList';
+import axios from 'axios';
 
-const App = () => (
-  <React.Fragment>
-    <IconRegistry icons={EvaIconsPack} />
-    <ApplicationProvider
-      mapping={mapping}
-      theme={lightTheme}>
-      <HomeScreen/>
-    </ApplicationProvider>
-  </React.Fragment>
-);
+class App extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      contacts: []
+    };
+  }
+
+  componentDidMount(){
+    axios
+      .get("https://randomuser.me/api/?nat=br&results=5")
+      .then(response => {
+        this.setState({
+          contacts: response.data.results
+        });
+      })
+  }
+
+  render(){
+    return (
+      <View>
+        <Header title="Agenda app"/>
+        <ContactList contacts={this.state.contacts} />
+      </View>
+    );
+  }
+}
 
 export default App;

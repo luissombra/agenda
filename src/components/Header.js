@@ -1,23 +1,24 @@
 import React from 'react';
-import {
-  Icon,
-  TopNavigation,
-  TopNavigationAction,
-} from 'react-native-ui-kitten';
+import { Text, View, StyleSheet } from 'react-native';
 
-const BackIcon = (style) => (
-    <Icon {...style} name='arrow-back' />
-  );
-  
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon}/>
-  );
-
-
-const TopBar = () => (
-    <TopNavigation
-    leftControl={BackAction()}
-    title='Application Title'/>
+const Header = (props) => (
+  <View style={style.container}>
+    <Text style={style.title}>{props.title}</Text>
+  </View>
 )
 
-export default TopBar;
+const style = StyleSheet.create({
+  container: {
+    marginTop:0,
+    backgroundColor: "#296a9d",
+    alignItems: "center"
+  },
+  title: {
+    color: "#fff",
+    fontSize: 28,
+    padding: 10,
+    paddingTop: 25
+  }
+});
+
+export default Header;
