@@ -1,16 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import ContactListItem from './ContactListItem';
 
-const ContactList = props => (
-  <View>
-    {props.contacts.map((person, i) => (
-      <ContactListItem key={i} firstName={person.name.first} lastName={person.name.last} />
-    ))}
-  </View>
-)
+const ContactList = props => {
+  const {onContactPress} = props;
 
-const styles = StyleSheet.create({
+  return (
+    <FlatList style={style.list}
+        data={ props.contacts }
+        renderItem={({ item }) => (
+          <ContactListItem
+              contact={item}
+              onContactPress={onContactPress}/>
+        )}
+        keyExtractor={(item, i) => Object.values(item.name).join('') }
+        onEndReached={props.onEndReached}
+        onEndReachedThreshold={props.onEndReachedThreshold}
+        initialNumToRender={props.initialNumToRender}
+    />
+  )
+}
+
+const style = StyleSheet.create({
   list: {
   },
 });

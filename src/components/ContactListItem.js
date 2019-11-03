@@ -1,24 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 
-const ContactListItem = props => (
-    <TouchableNativeFeedback useForeground={true}>
+const ContactListItem = props => {
+  const {contact, onContactPress} = props;
+  const {first, last} = contact.name;
+  const {thumbnail} = contact.picture;
+
+  return (
+    <TouchableOpacity useForeground={true} onPress={ () => { props.onContactPress({ contact }) } }>
         <View style={styles.item}>
-            <Text style={styles.itemText}>{`${props.firstName} ${props.lastName}`}</Text>
+            <Image style={styles.avatar} source={{ uri: thumbnail }} />
+            <Text style={styles.itemText}>{`${first} ${last}`}</Text>
         </View>
-    </TouchableNativeFeedback>
-)
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   item: {
+    height: 60,
     borderBottomWidth: 1,
     borderBottomColor: '#F6F6F6',
-    padding: 10,
-    paddingTop: 15,
-    paddingBottom: 15
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   itemText: {
-    fontSize: 18
+    flex: 7,
+    fontSize: 18,
+    marginLeft: 15
+  },
+  avatar: {
+    flex: 1,
+    marginLeft: 15,
+    aspectRatio: 1,
+    borderRadius: 50
   }
 });
 

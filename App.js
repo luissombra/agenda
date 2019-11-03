@@ -1,36 +1,39 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import Header from './src/components/Header';
-import ContactList from './src/components/ContactList';
-import axios from 'axios';
+import ContactsScreen from './src/screens/ContactsScreen';
+import ContactDetailsScreen from './src/screens/ContactDetailsScreen';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-class App extends React.Component{
+const StackNavigator = createStackNavigator(
+  {
+    Home: ContactsScreen,
+    ContactDetails: {
+      screen: ContactDetailsScreen,
+      navigationOptions: ({ navigation }) => {
+        const {first, last} = navigation.state.params.contact.name;
 
-  constructor(props){
-    super(props);
-    this.state = {
-      contacts: []
-    };
-  }
+        //remover linha abaixo após prepara a tela de detalhes
+        //const {first, last} = {first:'Maria', last:'Tereza'};
 
-  componentDidMount(){
-    axios
-      .get("https://randomuser.me/api/?nat=br&results=5")
-      .then(response => {
-        this.setState({
-          contacts: response.data.results
+        return ({
+          title: `${first} ${last}`
         });
-      })
+      }
+    },
+  },
+  {
+    initialRouteName: 'Home',
+    defaultNavigationOptions: {
+      title: 'Agenda App',
+      headerStyle: {
+        backgroundColor: '#021eba',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        flexGrow: 1
+      }
+    }
   }
+)
 
-  render(){
-    return (
-      <View>
-        <Header title="Agenda app"/>
-        <ContactList contacts={this.state.contacts} />
-      </View>
-    );
-  }
-}
-
-export default App;
+export default createAppContainer(StackNavigator);
